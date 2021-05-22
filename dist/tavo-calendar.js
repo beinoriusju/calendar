@@ -1,5 +1,5 @@
 /*!
- * calendar 0.0.5
+ * calendar 0.1.0
  *
  * @license MIT
  * @author Justinas Bei
@@ -354,6 +354,10 @@
             calendar_days_el.appendChild(getDummyDay());
         }
 
+        if (this.locale_data.firstDayOfWeek() == 1) {
+            calendar_days_el.appendChild(getDummyDay());
+        }
+
         calendar_code_el.appendChild(calendar_header_el);
         calendar_code_el.appendChild(calendar_week_names_el);
         calendar_code_el.appendChild(calendar_days_el);
@@ -475,10 +479,6 @@
 
     TavoCalendar.prototype.setEndDate = function(date) {
         this.state.date_end = date
-
-        this.destroy()
-        this.mount()
-        this.bindEvents();
     }
 
     TavoCalendar.prototype.getRange = function() {
@@ -500,6 +500,8 @@
     TavoCalendar.prototype.setFocusDate = function(date) {
         this.moment = moment(date);
 
+        this.config.date = this.moment.format('YYYY-MM-DD');
+
         this.destroy();
         this.mount()
         this.bindEvents();
@@ -511,6 +513,9 @@
 
     TavoCalendar.prototype.setFocusYear = function(y) {
         this.moment.set('year', y);
+
+        this.config.date = this.moment.format('YYYY-MM-DD');
+
         this.destroy();
         this.mount()
         this.bindEvents();
@@ -529,6 +534,8 @@
         
         this.moment.set('month', month == 0 ? 0 : month - 1);
 
+        this.config.date = this.moment.format('YYYY-MM-DD');
+
         this.destroy();
         this.mount()
         this.bindEvents();
@@ -544,10 +551,6 @@
 
     TavoCalendar.prototype.setConfig = function(config) {
         this.config = Object.assign({}, this.config, config);
-
-        this.destroy();
-        this.mount()
-        this.bindEvents();
     }
 
     TavoCalendar.prototype.getState = function() {
@@ -709,7 +712,10 @@
 
     TavoCalendar.prototype.unlock = function() {
         this.state.lock = false;
-        this.elements.calendar_code.classList.remove(CLASS_CALENDAR_CODE_LOCK);
+
+        this.destroy();
+        this.mount()
+        this.bindEvents();
     }
 
     TavoCalendar.prototype.destroy = function() {
