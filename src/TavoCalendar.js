@@ -1,5 +1,5 @@
 /*!
- * calendar 0.0.4
+ * calendar 0.1.0
  *
  * @license MIT
  * @author Justinas Bei
@@ -351,6 +351,10 @@
         moment_copy.endOf('month');
 
         for (var i = 0; i < (6 - moment_copy.day()); i++) {
+            calendar_days_el.appendChild(getDummyDay());
+        }
+
+        if (this.locale_data.firstDayOfWeek() == 1) {
             calendar_days_el.appendChild(getDummyDay());
         }
 
